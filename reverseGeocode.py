@@ -16,11 +16,12 @@ FORM_CLASS, _ = uic.loadUiType(os.path.join(
     
 class ReverseGeocodeTool(QgsMapTool):
 
-    def __init__(self, iface, settings):
+    def __init__(self, iface, settings, liq_settings):
         self.canvas = iface.mapCanvas()
         QgsMapTool.__init__(self, self.canvas)
         self.iface = iface
         self.settings = settings
+        self.liq_settings = liq_settings
         self.reverseGeoCodeDialog = ReverseGeocodeDialog(self, self.iface, self.iface.mainWindow())
         self.iface.addDockWidget(Qt.TopDockWidgetArea, self.reverseGeoCodeDialog)
         self.reverseGeoCodeDialog.hide()
@@ -94,7 +95,7 @@ class ReverseGeocodeTool(QgsMapTool):
         canvasCRS = self.canvas.mapSettings().destinationCrs()
         transform = QgsCoordinateTransform(canvasCRS, self.epsg4326, QgsProject.instance())
         pt = transform.transform(pt.x(), pt.y())
-        url = '{}?format=json&lat={:f}&lon={:f}&zoom={:d}&addressdetails=0&polygon_text=1'.format(self.settings.reverseURL(), pt.y(), pt.x(), self.settings.levelOfDetail)
+        url = '{}?format=json&lat={:f}&lon={:f}&zoom={:d}&addressdetails=0&polygon_text=1&{}'.format(self.liq_settings.reverseURL(), pt.y(), pt.x(), self.settings.levelOfDetail, self.liq_settings.url_params_str())
         # print( url )
         jsondata = self.request(url)
 

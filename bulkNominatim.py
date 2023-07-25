@@ -25,7 +25,7 @@ class BulkNominatim(object):
         # Initialize the Dialog Boxes
         self.settingsDialog = SettingsWidget(self.iface.mainWindow())
         self.liq_settingsDialog = LIQSettingsWidget(self.iface.mainWindow())
-        self.reverseGeocodeTool = ReverseGeocodeTool(self.iface, self.settingsDialog)
+        self.reverseGeocodeTool = ReverseGeocodeTool(self.iface, self.settingsDialog, self.liq_settingsDialog)
         self.bulkNominatimDialog = BulkNominatimDialog(self.iface, self.iface.mainWindow(), self.settingsDialog, self.liq_settingsDialog)
 
         self.canvas.mapToolSet.connect(self.unsetTool)
