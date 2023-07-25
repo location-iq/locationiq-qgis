@@ -18,13 +18,14 @@ FORM_CLASS, _ = uic.loadUiType(os.path.join(
     os.path.dirname(__file__), 'bulkNominatim.ui'))
 
 class BulkNominatimDialog(QDialog, FORM_CLASS):
-    def __init__(self, iface, parent, settings):
+    def __init__(self, iface, parent, settings, liq_settings):
         '''Initialize the bulk nominatim dialog box'''
         super(BulkNominatimDialog, self).__init__(parent)
         self.setupUi(self)
         self.iface = iface
         self.canvas = iface.mapCanvas()
         self.settings = settings
+        self.liq_settings = liq_settings
         self.addressMapLayerComboBox.setFilters(QgsMapLayerProxyModel.VectorLayer)
         self.addressMapLayerComboBox.layerChanged.connect(self.findFields)
         self.mMapLayerComboBox.setFilters(QgsMapLayerProxyModel.PointLayer)
@@ -86,7 +87,7 @@ class BulkNominatimDialog(QDialog, FORM_CLASS):
             newfeature.setGeometry(QgsGeometry.fromPointXY(pt))
             lat = str(pt.y())
             lon = str(pt.x())
-            url = '{}?format=json&lat={}&lon={}&zoom=18&addressdetails={}'.format(self.settings.reverseURL(),lat,lon,showDetails)
+            url = '{}?format=json&lat={}&lon={}&addressdetails={}&{}'.format(self.liq_settings.reverseURL(),lat,lon,showDetails,self.liq_settings.url_params_str())
             jsondata = self.request(url)
             # print(jsondata)
             address = ''
@@ -188,7 +189,7 @@ class BulkNominatimDialog(QDialog, FORM_CLASS):
                 address = feature[full_address_idx].strip()
                 address2 = re.sub('\s+', ' ', address)
                 address2 = quote_plus(address2)
-                url = self.settings.searchURL() + '?q=' + address2
+                url = self.liq_settings.searchURL() + '?q=' + address2
             elif useFreeFormQuery:
                 strs = []
                 if street_name_idx >= 0:
@@ -224,10 +225,10 @@ class BulkNominatimDialog(QDialog, FORM_CLASS):
                     s = ('{}'.format(feature[postal_idx])).strip()
                     if s:
                         strs.append(s)
-                url = self.settings.searchURL() + '?q=' + quote_plus(', '.join(strs))
+                url = self.liq_settings.searchURL() + '?q=' + quote_plus(', '.join(strs))
             else:
                 address = ','.join([str(x) if x else '' for x in feature.attributes()])
-                url = self.settings.searchURL() + '?'
+                url = self.liq_settings.searchURL() + '?'
                 if street_name_idx >= 0:
                     num = ''
                     name = ''
@@ -250,7 +251,7 @@ class BulkNominatimDialog(QDialog, FORM_CLASS):
                 if postal_idx >= 0:
                     url += self.formatParam('postalcode', feature[postal_idx])
                     
-            url += '&format=json&limit={}&polygon=0&addressdetails={}'.format(maxResults, showDetails)
+            url += '&format=json&limit={}&polygon=0&addressdetails={}&{}'.format(maxResults, showDetails, self.liq_settings.url_params_str())
             jsondata = self.request(url)
 
             try:
@@ -363,8 +364,8 @@ class BulkNominatimDialog(QDialog, FORM_CLASS):
             # Replace internal spaces with + signs
             address2 = re.sub('\s+', ' ', address)
             address2 = quote_plus(address2)
-            url = '{}?q={}&format=json&limit={}&polygon=0&addressdetails={}'.format(
-                self.settings.searchURL(), address2, maxResults, showDetails)
+            url = '{}?q={}&format=json&limit={}&polygon=0&addressdetails={}&{}'.format(
+                self.liq_settings.searchURL(), address2, maxResults, showDetails, self.liq_settings.url_params_str())
             jsondata = self.request(url)
             # print(jsondata)
             try:

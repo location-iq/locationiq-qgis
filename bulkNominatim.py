@@ -8,6 +8,7 @@ import webbrowser
 from .bulkDialog import BulkNominatimDialog
 from .reverseGeocode import ReverseGeocodeTool
 from .settings import SettingsWidget
+from .liq_settings import LIQSettingsWidget
 
 class BulkNominatim(object):
     def __init__(self, iface):
@@ -23,8 +24,9 @@ class BulkNominatim(object):
 
         # Initialize the Dialog Boxes
         self.settingsDialog = SettingsWidget(self.iface.mainWindow())
+        self.liq_settingsDialog = LIQSettingsWidget(self.iface.mainWindow())
         self.reverseGeocodeTool = ReverseGeocodeTool(self.iface, self.settingsDialog)
-        self.bulkNominatimDialog = BulkNominatimDialog(self.iface, self.iface.mainWindow(), self.settingsDialog)
+        self.bulkNominatimDialog = BulkNominatimDialog(self.iface, self.iface.mainWindow(), self.settingsDialog, self.liq_settingsDialog)
 
         self.canvas.mapToolSet.connect(self.unsetTool)
         
@@ -47,8 +49,11 @@ class BulkNominatim(object):
         # Initialize the Settings Menu
         settingsicon = QIcon(os.path.dirname(__file__) + '/images/settings.png')
         self.settingsAction = QAction(settingsicon, u"Settings", self.iface.mainWindow())
+        self.liq_settingsAction = QAction(settingsicon, u"LocationIQ Settings", self.iface.mainWindow())
         self.settingsAction.triggered.connect(self.settings)
+        self.liq_settingsAction.triggered.connect(self.liq_settings)
         self.iface.addPluginToMenu(u"Nominatim GeoCoding", self.settingsAction)
+        self.iface.addPluginToMenu(u"LocationIQ GeoCoding", self.liq_settingsAction)
 
         # Help
         helpicon = QIcon(os.path.dirname(__file__) + '/images/help.png')
@@ -86,6 +91,9 @@ class BulkNominatim(object):
 
     def settings(self):
         self.settingsDialog.show()
+
+    def liq_settings(self):
+        self.liq_settingsDialog.show()
 
     def help(self):
         '''Display a help page'''
