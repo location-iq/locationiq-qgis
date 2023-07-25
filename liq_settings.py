@@ -58,7 +58,7 @@ class LIQSettingsWidget(QDialog, FORM_CLASS):
         self.close()
 
     def restore(self):
-        self.liq_url_textbox.clear()
+        self.liq_url_textbox.setText(NOMURL)
         self.api_access_token_textbox.clear()
         self.language_textbox.clear()
         self.country_codes_textbox.clear()
