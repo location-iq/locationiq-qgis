@@ -8,7 +8,6 @@ import webbrowser
 from .bulkDialog import BulkNominatimDialog
 from .reverseGeocode import ReverseGeocodeTool
 from .settings import SettingsWidget
-from .liq_settings import LIQSettingsWidget
 
 class BulkNominatim(object):
     def __init__(self, iface):
@@ -24,43 +23,39 @@ class BulkNominatim(object):
 
         # Initialize the Dialog Boxes
         self.settingsDialog = SettingsWidget(self.iface.mainWindow())
-        self.liq_settingsDialog = LIQSettingsWidget(self.iface.mainWindow())
-        self.reverseGeocodeTool = ReverseGeocodeTool(self.iface, self.settingsDialog, self.liq_settingsDialog)
-        self.bulkNominatimDialog = BulkNominatimDialog(self.iface, self.iface.mainWindow(), self.settingsDialog, self.liq_settingsDialog)
+        self.reverseGeocodeTool = ReverseGeocodeTool(self.iface, self.settingsDialog)
+        self.bulkNominatimDialog = BulkNominatimDialog(self.iface, self.iface.mainWindow(), self.settingsDialog)
 
         self.canvas.mapToolSet.connect(self.unsetTool)
-        
+
         # Initialize the bulk nominatim dialog box
         icon = QIcon(os.path.dirname(__file__) + "/images/icon.png")
         self.nominatimAction = QAction(icon, u"Bulk GeoCoding", self.iface.mainWindow())
         self.nominatimAction.triggered.connect(self.nominatimTool)
         self.toolbar.addAction(self.nominatimAction)
-        self.iface.addPluginToMenu(u"Nominatim GeoCoding", self.nominatimAction)
-        
+        self.iface.addPluginToMenu(u"LocationIQ GeoCoding", self.nominatimAction)
+
         # Add Interface for Reverse GeoCoding
         icon = QIcon(os.path.dirname(__file__) + "/images/reverse.png")
         self.reverseGeocodeAction = QAction(icon, u"Reverse Point GeoCoding", self.iface.mainWindow())
         self.reverseGeocodeAction.triggered.connect(self.setReverseGeocodeTool)
         self.reverseGeocodeAction.setCheckable(True)
         self.toolbar.addAction(self.reverseGeocodeAction)
-        self.iface.addPluginToMenu(u"Nominatim GeoCoding", self.reverseGeocodeAction)
+        self.iface.addPluginToMenu(u"LocationIQ GeoCoding", self.reverseGeocodeAction)
 
 
         # Initialize the Settings Menu
         settingsicon = QIcon(os.path.dirname(__file__) + '/images/settings.png')
-        self.settingsAction = QAction(settingsicon, u"Settings", self.iface.mainWindow())
-        self.liq_settingsAction = QAction(settingsicon, u"LocationIQ Settings", self.iface.mainWindow())
+        self.settingsAction = QAction(settingsicon, u"LocationIQ Settings", self.iface.mainWindow())
         self.settingsAction.triggered.connect(self.settings)
-        self.liq_settingsAction.triggered.connect(self.liq_settings)
-        self.iface.addPluginToMenu(u"Nominatim GeoCoding", self.settingsAction)
-        self.iface.addPluginToMenu(u"LocationIQ GeoCoding", self.liq_settingsAction)
+        self.iface.addPluginToMenu(u"LocationIQ GeoCoding", self.settingsAction)
 
         # Help
         helpicon = QIcon(os.path.dirname(__file__) + '/images/help.png')
         self.helpAction = QAction(helpicon, u"Help", self.iface.mainWindow())
         self.helpAction.triggered.connect(self.help)
-        self.iface.addPluginToMenu(u"Nominatim GeoCoding", self.helpAction)
-                
+        self.iface.addPluginToMenu(u"LocationIQ GeoCoding", self.helpAction)
+
     def unsetTool(self, tool):
         '''Uncheck the Reverse Geocoding tool'''
         try:
@@ -73,18 +68,18 @@ class BulkNominatim(object):
     def unload(self):
         """Unload BulkNominatim from the QGIS interface."""
         self.canvas.unsetMapTool(self.reverseGeocodeTool)
-        self.iface.removePluginMenu(u"Nominatim GeoCoding", self.nominatimAction)
-        self.iface.removePluginMenu(u"Nominatim GeoCoding", self.reverseGeocodeAction)
-        self.iface.removePluginMenu(u"Nominatim GeoCoding", self.settingsAction)
-        self.iface.removePluginMenu(u"Nominatim GeoCoding", self.helpAction)
+        self.iface.removePluginMenu(u"LocationIQ GeoCoding", self.nominatimAction)
+        self.iface.removePluginMenu(u"LocationIQ GeoCoding", self.reverseGeocodeAction)
+        self.iface.removePluginMenu(u"LocationIQ GeoCoding", self.settingsAction)
+        self.iface.removePluginMenu(u"LocationIQ GeoCoding", self.helpAction)
         # Remove Toolbar
         del self.toolbar
         self.reverseGeocodeTool.unload()
-    
+
     def setReverseGeocodeTool(self):
         self.reverseGeocodeAction.setChecked(True)
         self.canvas.setMapTool(self.reverseGeocodeTool)
-        
+
     def nominatimTool(self):
         """Display the dialog window."""
         self.bulkNominatimDialog.show()
@@ -92,11 +87,7 @@ class BulkNominatim(object):
     def settings(self):
         self.settingsDialog.show()
 
-    def liq_settings(self):
-        self.liq_settingsDialog.show()
-
     def help(self):
         '''Display a help page'''
-        url = QUrl.fromLocalFile(os.path.dirname(__file__) + "/index.html").toString()
+        url = QUrl("https://locationiq.com/docs?ref=qgis").toString()
         webbrowser.open(url, new=2)
-        
