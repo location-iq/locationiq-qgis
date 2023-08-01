@@ -17,9 +17,9 @@ class BulkNominatim(object):
     def initGui(self):
         """Initialize BulkNominatim GUI."""
         # Set up a toolbar
-        self.toolbar = self.iface.addToolBar('Bulk Nominatim Toolbar')
-        self.toolbar.setObjectName('BulkNominatimToolbar')
-        self.toolbar.setToolTip('Bulk Nominatim Toolbar')
+        self.toolbar = self.iface.addToolBar('LocationIQ Toolbar')
+        self.toolbar.setObjectName('LocationIQToolbar')
+        self.toolbar.setToolTip('LocationIQ Toolbar')
 
         # Initialize the Dialog Boxes
         self.settingsDialog = SettingsWidget(self.iface.mainWindow())
