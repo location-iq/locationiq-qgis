@@ -1,16 +1,16 @@
-# Bulk Nominatim Plugin
+# LocationIQ Plugin
 
-The ***Bulk Nominatim QGIS Plugin*** interfaces with an OpenStreetMap nominatim service to provide geocoding of addresses and reverse geocoding of coordinates. This plugin is only recommended to be used with personal nominatim servers because OpenStreetMap does not permit bulk nominatim requests.
+The ***LocationIQ QGIS Plugin*** interfaces with our service to provide geocoding of addresses and reverse geocoding of coordinates. This plugin is forked from the **Bulk Nominatim QGIS Plugin** hosted at `https://github.com/NationalSecurityAgency/qgis-bulk-nominatim`
 
 ## Installation
-The plugin can be installed by downloading the latest version from `https://github.com/NationalSecurityAgency/qgis-bulk-nominatim`. Launch QGIS and select ***Plugins->Manage and Install Plugins...*** from the menu. Click on the ***Install from ZIP*** tab on the left, click on the `...` button on the right to navigate to where you saved the bulk nominatim downloaded ZIP file and select it then click on the ***Install Plugin*** button. Click the ***Close*** button and you are ready to start address geocoding.
+The plugin can be installed by downloading the latest version from `https://github.com/locationiq/locationiq-qgis`. Launch QGIS and select ***Plugins->Manage and Install Plugins...*** from the menu. Click on the ***Install from ZIP*** tab on the left, click on the `...` button on the right to navigate to where you saved the bulk nominatim downloaded ZIP file and select it then click on the ***Install Plugin*** button. Click the ***Close*** button and you are ready to start address geocoding.
 
 <div style="text-align:center"><img src="doc/install.jpg" alt="Installing Plugin"></div>
 
 
-## Bulk Nominatim Tools
+## LocationIQ Tools
 
-The plugin ***Settings*** need to be configured to point to a nominatim endpoint. See the ***Settings*** section on how to do this. The plugin can be accessed from the `Plugins->Nominatim GeoCoding` menu or from the two tool bar icons.
+The plugin ***Settings*** need to be configured to point to a nominatim endpoint. See the ***Settings*** section on how to do this. The plugin can be accessed from the `Plugins->LocationIQ GeoCoding` menu or from the two tool bar icons.
 
 <div style="text-align:center"><img src="doc/menu.jpg" alt="Nominatim GeoCoding"></div>
 
@@ -49,8 +49,4 @@ Clicking on the ***OK*** button causes the plugin to start geocoding.
 Clicking on this tool allows the user to be able to click on the map and return the closet feature/address in a dockable window. Note that the closes feature may be an administrative boundary or another feature that is not that close to the point clicked on. If the nominatim service is using the latest software, the actual polygon or point of the located feature will be displayed.
 
 ## Settings
-In ***Settings*** the user can select the Nominatim Service URL endpoint, the maximum number of addresses to geocode and for reverse geocoding the level of detail where 0 represents the country and 18 the address number. Here is the dialog window.
-
-<div style="text-align:center"><img src="doc/settings.jpg" alt="Settings"></div>
-
-Please note that this plugin is designed to use commercial or personal Nominatim services. The OpenStreetMap URL displayed here is not for bulk use as it violates their policy and will result in the user being blocked from their site for a period of time.
+In ***Settings*** the user can configure the custom parameters for geocoding/reverse geocoding. The documentation for these parameters are found at https://locationiq.com/docs?ref=qgis

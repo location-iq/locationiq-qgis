@@ -1,15 +1,15 @@
 [general]
-name=Bulk Nominatim GeoCoding
+name=LocationIQ GeoCoding
 qgisMinimumVersion=3.4
-description=Bulk nominatim geocoding
+description=LocationIQ geocoding
 version=3.0.6
-author=C Hamilton
-email=adenaculture@gmail.com
-about=Bulk nominatim geocoding
-homepage=https://github.com/NationalSecurityAgency/qgis-bulk-nominatim
-tracker=https://github.com/NationalSecurityAgency/qgis-bulk-nominatim/issues
-repository=https://github.com/NationalSecurityAgency/qgis-bulk-nominatim
-tags=geocoding,nominatim,address search
+author=C Hamilton;LocationIQ
+email=hello@locationiq.com
+about=locationiq geocoding
+homepage=https://github.com/locationiq/locationiq-qgis
+tracker=https://github.com/locationiq/locationiq-qgis/issues
+repository=https://github.com/locationiq/locationiq-qgis
+tags=geocoding,reverse geocoding,locationiq,address search
 category=Plugins
 icon=images/icon.png
 experimental=False
