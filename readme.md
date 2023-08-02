@@ -49,4 +49,4 @@ Clicking on the ***OK*** button causes the plugin to start geocoding.
 Clicking on this tool allows the user to be able to click on the map and return the closet feature/address in a dockable window. Note that the closes feature may be an administrative boundary or another feature that is not that close to the point clicked on. If the nominatim service is using the latest software, the actual polygon or point of the located feature will be displayed.
 
 ## Settings
-In ***Settings*** the user can configure the custom parameters for geocoding/reverse geocoding. The documentation for these parameters are found at https://locationiq.com/docs?ref=qgis
+In ***Settings*** the user can configure the custom parameters for geocoding/reverse geocoding. The documentation for these parameters are found at https://locationiq.com/docs
