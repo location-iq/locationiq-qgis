@@ -57,7 +57,7 @@ class SettingsWidget(QDialog, FORM_CLASS):
         settings.setValue('/LocationIQ/source', self.source)
         self.normalize = '1' if self.normalize_checkbox.isChecked() else '0'
         settings.setValue('/LocationIQ/normalize', self.normalize)
-        self.maxAddress = self.maxAddress_textbox.text() or '100'
+        self.maxAddress = int(self.maxAddress_textbox.text() or '100')
         settings.setValue('/LocationIQ/maxAddress', self.maxAddress)
         self.close()
 
