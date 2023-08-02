@@ -1,9 +1,9 @@
 # LocationIQ Plugin
 
-The ***LocationIQ QGIS Plugin*** interfaces with our service to provide geocoding of addresses and reverse geocoding of coordinates. This plugin is forked from the **Bulk Nominatim QGIS Plugin** hosted at `https://github.com/NationalSecurityAgency/qgis-bulk-nominatim`
+The ***LocationIQ QGIS Plugin*** interfaces with [LocationIQ](https://locationiq.com/) to provide geocoding of addresses and reverse geocoding of coordinates. This plugin is forked from the **Bulk Nominatim QGIS Plugin** hosted at `https://github.com/NationalSecurityAgency/qgis-bulk-nominatim`
 
 ## Installation
-The plugin can be installed by downloading the latest version from `https://github.com/locationiq/locationiq-qgis`. Launch QGIS and select ***Plugins->Manage and Install Plugins...*** from the menu. Click on the ***Install from ZIP*** tab on the left, click on the `...` button on the right to navigate to where you saved the bulk nominatim downloaded ZIP file and select it then click on the ***Install Plugin*** button. Click the ***Close*** button and you are ready to start address geocoding.
+The plugin can be installed by downloading the latest version from `https://github.com/location-iq/locationiq-qgis`. Launch QGIS and select ***Plugins->Manage and Install Plugins...*** from the menu. Click on the ***Install from ZIP*** tab on the left, click on the `...` button on the right to navigate to where you saved the bulk nominatim downloaded ZIP file and select it then click on the ***Install Plugin*** button. Click the ***Close*** button and you are ready to start address geocoding.
 
 <div style="text-align:center"><img src="doc/install.jpg" alt="Installing Plugin"></div>
 
