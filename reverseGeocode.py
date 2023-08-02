@@ -94,7 +94,7 @@ class ReverseGeocodeTool(QgsMapTool):
         canvasCRS = self.canvas.mapSettings().destinationCrs()
         transform = QgsCoordinateTransform(canvasCRS, self.epsg4326, QgsProject.instance())
         pt = transform.transform(pt.x(), pt.y())
-        url = '{}?format=json&lat={:f}&lon={:f}&zoom={:d}&addressdetails=0&polygon_text=1'.format(self.settings.reverseURL(), pt.y(), pt.x(), self.settings.levelOfDetail)
+        url = '{}?format=json&lat={:f}&lon={:f}&addressdetails=0&polygon_text=1&{}'.format(self.settings.reverseURL(), pt.y(), pt.x(), self.settings.url_params_str())
         # print( url )
         jsondata = self.request(url)
 

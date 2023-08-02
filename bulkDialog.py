@@ -86,7 +86,7 @@ class BulkNominatimDialog(QDialog, FORM_CLASS):
             newfeature.setGeometry(QgsGeometry.fromPointXY(pt))
             lat = str(pt.y())
             lon = str(pt.x())
-            url = '{}?format=json&lat={}&lon={}&zoom=18&addressdetails={}'.format(self.settings.reverseURL(),lat,lon,showDetails)
+            url = '{}?format=json&lat={}&lon={}&addressdetails={}&{}'.format(self.settings.reverseURL(),lat,lon,showDetails,self.settings.url_params_str())
             jsondata = self.request(url)
             # print(jsondata)
             address = ''
@@ -96,6 +96,8 @@ class BulkNominatimDialog(QDialog, FORM_CLASS):
                     raise ValueError('')
                 display_name = self.fieldValidate(jd, 'display_name')
                 if showDetails:
+                    lat = self.fieldValidate(jd, 'lat')
+                    lon = self.fieldValidate(jd, 'lon')
                     osm_type = self.fieldValidate(jd, 'osm_type')
                     osm_id = self.fieldValidate(jd, 'osm_id')
                     house_number = ''
@@ -121,7 +123,7 @@ class BulkNominatimDialog(QDialog, FORM_CLASS):
                         postcode = self.fieldValidate(jd['address'], 'postcode')
                         country = self.fieldValidate(jd['address'], 'country')
                         country_code = self.fieldValidate(jd['address'], 'country_code')
-                    feature.setAttributes([osm_type, osm_id, display_name, house_number, road, neighbourhood, locality, town, city, county, state, postcode, country, country_code])
+                    feature.setAttributes([osm_type, osm_id, lat, lon, display_name, house_number, road, neighbourhood, locality, town, city, county, state, postcode, country, country_code])
                     self.provider.addFeatures([feature])
                 else:
                     feature.setAttributes([display_name])
@@ -250,7 +252,7 @@ class BulkNominatimDialog(QDialog, FORM_CLASS):
                 if postal_idx >= 0:
                     url += self.formatParam('postalcode', feature[postal_idx])
                     
-            url += '&format=json&limit={}&polygon=0&addressdetails={}'.format(maxResults, showDetails)
+            url += '&format=json&limit={}&polygon=0&addressdetails={}&{}'.format(maxResults, showDetails, self.settings.url_params_str())
             jsondata = self.request(url)
 
             try:
@@ -269,6 +271,8 @@ class BulkNominatimDialog(QDialog, FORM_CLASS):
                     display_name = self.fieldValidate(addr, 'display_name')
 
                     if self.detailedAddressCheckBox.checkState():
+                        lat = self.fieldValidate(addr, 'lat')
+                        lon = self.fieldValidate(addr, 'lon')
                         osm_type = self.fieldValidate(addr, 'osm_type')
                         osm_id = self.fieldValidate(addr, 'osm_id')
                         osm_class = self.fieldValidate(addr, 'class')
@@ -296,7 +300,7 @@ class BulkNominatimDialog(QDialog, FORM_CLASS):
                             postcode = self.fieldValidate(addr['address'], 'postcode')
                             country = self.fieldValidate(addr['address'], 'country')
                             country_code = self.fieldValidate(addr['address'], 'country_code')
-                        newfeature.setAttributes([osm_type, osm_id, osm_class, type, address, display_name, house_number, road, neighbourhood, locality, town, city, county, state, postcode, country, country_code])
+                        newfeature.setAttributes([osm_type, osm_id, osm_class, type, lat, lon, address, display_name, house_number, road, neighbourhood, locality, town, city, county, state, postcode, country, country_code])
                         self.provider.addFeatures([newfeature])
                     else:
                         # Display only the resulting output address
@@ -363,8 +367,8 @@ class BulkNominatimDialog(QDialog, FORM_CLASS):
             # Replace internal spaces with + signs
             address2 = re.sub('\s+', ' ', address)
             address2 = quote_plus(address2)
-            url = '{}?q={}&format=json&limit={}&polygon=0&addressdetails={}'.format(
-                self.settings.searchURL(), address2, maxResults, showDetails)
+            url = '{}?q={}&format=json&limit={}&polygon=0&addressdetails={}&{}'.format(
+                self.settings.searchURL(), address2, maxResults, showDetails, self.settings.url_params_str())
             jsondata = self.request(url)
             # print(jsondata)
             try:
@@ -383,6 +387,8 @@ class BulkNominatimDialog(QDialog, FORM_CLASS):
                     display_name = self.fieldValidate(addr, 'display_name')
 
                     if self.detailedAddressCheckBox.checkState():
+                        lat = self.fieldValidate(addr, 'lat')
+                        lon = self.fieldValidate(addr, 'lon')
                         osm_type = self.fieldValidate(addr, 'osm_type')
                         osm_id = self.fieldValidate(addr, 'osm_id')
                         osm_class = self.fieldValidate(addr, 'class')
@@ -410,7 +416,7 @@ class BulkNominatimDialog(QDialog, FORM_CLASS):
                             postcode = self.fieldValidate(addr['address'], 'postcode')
                             country = self.fieldValidate(addr['address'], 'country')
                             country_code = self.fieldValidate(addr['address'], 'country_code')
-                        feature.setAttributes([osm_type, osm_id, osm_class, type, address, display_name, house_number, road, neighbourhood, locality, town, city, county, state, postcode, country, country_code])
+                        feature.setAttributes([osm_type, osm_id, osm_class, type, lat, lon, address, display_name, house_number, road, neighbourhood, locality, town, city, county, state, postcode, country, country_code])
                         self.provider.addFeatures([feature])
                     else:
                         # Display only the resulting output address
@@ -443,6 +449,8 @@ class BulkNominatimDialog(QDialog, FORM_CLASS):
             self.provider.addAttributes([
                 QgsField("osm_type", QVariant.String),
                 QgsField("osm_id", QVariant.String),
+                QgsField("lat", QVariant.String),
+                QgsField("lon", QVariant.String),
                 QgsField("display_name", QVariant.String),
                 QgsField("house_number", QVariant.String),
                 QgsField("road", QVariant.String),
@@ -477,6 +485,8 @@ class BulkNominatimDialog(QDialog, FORM_CLASS):
                 QgsField("osm_id", QVariant.String),
                 QgsField("class", QVariant.String),
                 QgsField("type", QVariant.String),
+                QgsField("lat", QVariant.String),
+                QgsField("lon", QVariant.String),
                 QgsField("source_addr", QVariant.String),
                 QgsField("display_name", QVariant.String),
                 QgsField("house_number", QVariant.String),
