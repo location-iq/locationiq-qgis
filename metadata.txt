@@ -1,7 +1,7 @@
 [general]
-name=LocationIQ GeoCoding
+name=LocationIQ Geocoding and Maps
 qgisMinimumVersion=3.4
-description=LocationIQ geocoding
+description=LocationIQ integration to add geocoding and map tiles to QGIS
 version=3.0.6
 author=C Hamilton;LocationIQ
 email=hello@locationiq.com
